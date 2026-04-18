@@ -1,0 +1,7 @@
+/uploads/posters/*
+/uploads/actors/*
+/uploads/gallery/*
+!uploads/posters/.gitkeep
+!uploads/actors/.gitkeep
+!uploads/gallery/.gitkeep
+.env
