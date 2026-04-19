@@ -15,21 +15,15 @@ if (session_status() === PHP_SESSION_NONE) {
 
 // =====================================================
 // VERİTABANI AYARLARI
-// Ortam değişkenleri varsa onları kullan (Render.com)
-// Yoksa yerel geliştirme varsayılanlarını kullan
 // =====================================================
-define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
-define('DB_NAME', getenv('DB_NAME') ?: 'turk_filmleri');
-define('DB_USER', getenv('DB_USER') ?: 'root');
-define('DB_PASS', getenv('DB_PASS') ?: '');
-define('DB_CHARSET', 'utf8mb4');
+define('DB_FILE', __DIR__ . '/database.sqlite');
 
 // =====================================================
 // SİTE AYARLARI
 // =====================================================
 define('SITE_NAME', 'Türk Filmleri');
 define('SITE_DESCRIPTION', 'Türk Sinemasının En İyi Filmleri');
-define('SITE_URL', getenv('SITE_URL') ?: 'http://localhost/elif-repo');
+define('SITE_URL', 'http://localhost:8082');
 
 // =====================================================
 // DOSYA YOLLARI

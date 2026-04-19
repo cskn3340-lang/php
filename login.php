@@ -65,6 +65,21 @@ require_once INCLUDES_PATH . '/navbar.php';
     <div class="auth-card">
         <h1><i class="fas fa-sign-in-alt" style="color: var(--accent-gold)"></i> Giriş Yap</h1>
         <p class="auth-subtitle">Hesabınıza giriş yaparak filmleri beğenin, listenize ekleyin ve yorum yazın.</p>
+
+        <div class="auth-mini-profiles" aria-hidden="true">
+            <div class="auth-mini-profile">
+                <img src="<?= e(get_user_avatar_url('Sinemacı')) ?>" alt="" loading="lazy">
+                <span>Sinemacı</span>
+            </div>
+            <div class="auth-mini-profile">
+                <img src="<?= e(get_user_avatar_url('Filmsever')) ?>" alt="" loading="lazy">
+                <span>Filmsever</span>
+            </div>
+            <div class="auth-mini-profile">
+                <img src="<?= e(get_user_avatar_url('Fragman')) ?>" alt="" loading="lazy">
+                <span>Fragman</span>
+            </div>
+        </div>
         
         <?php if (!empty($errors)): ?>
             <div class="alert alert-error">

@@ -88,6 +88,21 @@ require_once INCLUDES_PATH . '/navbar.php';
     <div class="auth-card">
         <h1><i class="fas fa-user-plus" style="color: var(--accent-gold)"></i> Kayıt Ol</h1>
         <p class="auth-subtitle">Ücretsiz hesap oluşturun ve Türk sinemasını keşfedin.</p>
+
+        <div class="auth-mini-profiles" aria-hidden="true">
+            <div class="auth-mini-profile">
+                <img src="<?= e(get_user_avatar_url('Koleksiyon')) ?>" alt="" loading="lazy">
+                <span>Koleksiyon</span>
+            </div>
+            <div class="auth-mini-profile">
+                <img src="<?= e(get_user_avatar_url('Yorumcu')) ?>" alt="" loading="lazy">
+                <span>Yorumcu</span>
+            </div>
+            <div class="auth-mini-profile">
+                <img src="<?= e(get_user_avatar_url('Takipçi')) ?>" alt="" loading="lazy">
+                <span>Takipçi</span>
+            </div>
+        </div>
         
         <?php if (!empty($errors)): ?>
             <div class="alert alert-error">

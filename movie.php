@@ -79,7 +79,7 @@ $stmt = $pdo->prepare("
     LEFT JOIN likes l ON m.id = l.movie_id 
     WHERE m.id != ? AND m.genre LIKE ?
     GROUP BY m.id 
-    ORDER BY RAND() 
+    ORDER BY RANDOM() 
     LIMIT 6
 ");
 $stmt->execute([$movie_id, '%' . ($movie['genre'] ? explode(',', $movie['genre'])[0] : 'Drama') . '%']);
@@ -90,8 +90,10 @@ $is_liked = is_logged_in() ? has_user_liked($pdo, $movie_id, $_SESSION['user_id'
 $in_watchlist = is_logged_in() ? is_in_watchlist($pdo, $movie_id, $_SESSION['user_id']) : false;
 
 // İlk video embed URL
-$first_video = !empty($all_videos) ? $all_videos[0] : null;
-$first_embed_url = $first_video ? youtube_url_to_embed($first_video['youtube_url']) : null;
+// Fragman önceliği: önce trailer, yoksa ilk video
+$trailer_videos = $videos_by_type['trailer'] ?? [];
+$featured_video = $trailer_videos[0] ?? ($all_videos[0] ?? null);
+$featured_embed_url = $featured_video ? youtube_url_to_embed($featured_video['youtube_url']) : null;
 
 require_once INCLUDES_PATH . '/header.php';
 require_once INCLUDES_PATH . '/navbar.php';
@@ -124,7 +126,7 @@ require_once INCLUDES_PATH . '/navbar.php';
             </div>
             <p class="movie-detail-description"><?= e($movie['description']) ?></p>
             <div class="movie-detail-actions">
-                <?php if ($first_embed_url): ?>
+                <?php if ($featured_embed_url): ?>
                     <a href="#videoSection" class="btn btn-primary btn-lg"><i class="fas fa-play"></i> Fragmanı İzle</a>
                 <?php endif; ?>
                 <button class="btn btn-like btn-lg <?= $is_liked ? 'active' : '' ?>" data-movie-id="<?= $movie['id'] ?>">

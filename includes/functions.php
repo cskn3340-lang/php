@@ -74,6 +74,31 @@ function get_youtube_thumbnail(string $url): string
 }
 
 /**
+ * Kullanıcı için otomatik avatar URL'si üretir
+ */
+function get_user_avatar_url(string $username, string $role = 'user'): string
+{
+    $seed = rawurlencode(trim($username) . '-' . $role);
+    return "https://api.dicebear.com/7.x/bottts-neutral/svg?seed={$seed}&backgroundColor=e2b616";
+}
+
+/**
+ * Bir filmin ilk fragman URL'sini getirir
+ */
+function get_movie_trailer_url(PDO $pdo, int $movie_id): string|false
+{
+    $stmt = $pdo->prepare("SELECT youtube_url FROM movie_videos WHERE movie_id = ? AND video_type = 'trailer' ORDER BY created_at ASC LIMIT 1");
+    $stmt->execute([$movie_id]);
+    $youtube_url = $stmt->fetchColumn();
+
+    if (!$youtube_url) {
+        return false;
+    }
+
+    return youtube_url_to_embed($youtube_url);
+}
+
+/**
  * URL doğrulama
  */
 function validate_url(string $url): bool

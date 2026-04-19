@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (empty($errors)) {
             if ($editing) {
                 $stmt = $pdo->prepare("
-                    UPDATE movies SET title=?, year=?, description=?, director=?, genre=?, duration=?, poster_url=?, cover_url=?, updated_at=NOW() 
+                    UPDATE movies SET title=?, year=?, description=?, director=?, genre=?, duration=?, poster_url=?, cover_url=?, updated_at=CURRENT_TIMESTAMP
                     WHERE id=?
                 ");
                 $stmt->execute([$title, $year, $description, $director, $genre, $duration ?: null, $poster_url ?: null, $cover_url ?: null, $movie['id']]);

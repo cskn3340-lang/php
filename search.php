@@ -138,7 +138,9 @@ require_once INCLUDES_PATH . '/navbar.php';
                     $like_count = $movie['like_count'] ?? 0;
                     $is_liked = is_logged_in() ? has_user_liked($pdo, $movie['id'], $_SESSION['user_id']) : false;
                     $in_watchlist = is_logged_in() ? is_in_watchlist($pdo, $movie['id'], $_SESSION['user_id']) : false;
-                    $poster = $movie['poster_url'] ?: 'https://via.placeholder.com/300x450/1a1a2e/e2b616?text=' . urlencode($movie['title']);
+                    $trailer_url = get_movie_trailer_url($pdo, $movie['id']);
+                    // Prefer cover_url over poster_url if available
+                    $poster = (!empty($movie['cover_url']) ? $movie['cover_url'] : ($movie['poster_url'] ?: 'https://via.placeholder.com/300x450/1a1a2e/e2b616?text=' . urlencode($movie['title'])));
                     ?>
                     <div class="movie-card">
                         <div class="movie-card-poster">
@@ -147,6 +149,9 @@ require_once INCLUDES_PATH . '/navbar.php';
                             <span class="movie-card-year"><?= e($movie['year']) ?></span>
                             <div class="movie-card-poster-overlay">
                                 <a href="<?= SITE_URL ?>/movie.php?id=<?= $movie['id'] ?>" class="btn btn-primary btn-sm"><i class="fas fa-play"></i> Detaylar</a>
+                                <?php if ($trailer_url): ?>
+                                    <a href="<?= e($trailer_url) ?>" class="btn btn-secondary btn-sm trailer-btn" target="_blank" rel="noopener"><i class="fas fa-clapperboard"></i> Fragman</a>
+                                <?php endif; ?>
                             </div>
                         </div>
                         <div class="movie-card-body">
@@ -165,6 +170,9 @@ require_once INCLUDES_PATH . '/navbar.php';
                                 <button class="btn btn-watchlist btn-sm <?= $in_watchlist ? 'active' : '' ?>" data-movie-id="<?= $movie['id'] ?>">
                                     <i class="<?= $in_watchlist ? 'fas' : 'far' ?> fa-bookmark"></i>
                                 </button>
+                                <?php if ($trailer_url): ?>
+                                    <a href="<?= e($trailer_url) ?>" class="btn btn-secondary btn-sm trailer-btn" target="_blank" rel="noopener"><i class="fas fa-clapperboard"></i></a>
+                                <?php endif; ?>
                                 <a href="<?= SITE_URL ?>/movie.php?id=<?= $movie['id'] ?>" class="btn btn-secondary btn-sm"><i class="fas fa-info-circle"></i></a>
                             </div>
                         </div>

@@ -64,7 +64,7 @@ require_once INCLUDES_PATH . '/navbar.php';
         <!-- Profil Header -->
         <div class="profile-header animate-on-scroll">
             <div class="profile-avatar">
-                <?= mb_strtoupper(mb_substr($user['username'], 0, 1)) ?>
+                <img src="<?= e(get_user_avatar_url($user['username'], $user['role'] ?? 'user')) ?>" alt="Profil fotoğrafı" loading="lazy">
             </div>
             <div class="profile-info">
                 <h1><?= e($user['username']) ?></h1>
@@ -105,14 +105,21 @@ require_once INCLUDES_PATH . '/navbar.php';
             <?php else: ?>
                 <div class="movies-grid">
                     <?php foreach ($liked_movies as $movie): ?>
+                        <?php 
+                        $trailer_url = get_movie_trailer_url($pdo, $movie['id']);
+                        $poster = (!empty($movie['cover_url']) ? $movie['cover_url'] : ($movie['poster_url'] ?: 'https://via.placeholder.com/300x450/1a1a2e/e2b616?text=Film'));
+                        ?>
                         <div class="movie-card">
                             <div class="movie-card-poster">
-                                <img src="<?= e($movie['poster_url'] ?: 'https://via.placeholder.com/300x450/1a1a2e/e2b616?text=Film') ?>" 
+                                <img src="<?= e($poster) ?>" 
                                      alt="<?= e($movie['title']) ?>" loading="lazy"
                                      onerror="this.src='https://via.placeholder.com/300x450/1a1a2e/e2b616?text=Film'">
                                 <span class="movie-card-year"><?= e($movie['year']) ?></span>
                                 <div class="movie-card-poster-overlay">
                                     <a href="<?= SITE_URL ?>/movie.php?id=<?= $movie['id'] ?>" class="btn btn-primary btn-sm"><i class="fas fa-play"></i> Detaylar</a>
+                                    <?php if ($trailer_url): ?>
+                                        <a href="<?= e($trailer_url) ?>" class="btn btn-secondary btn-sm trailer-btn" target="_blank" rel="noopener"><i class="fas fa-clapperboard"></i> Fragman</a>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                             <div class="movie-card-body">
@@ -139,14 +146,21 @@ require_once INCLUDES_PATH . '/navbar.php';
             <?php else: ?>
                 <div class="movies-grid">
                     <?php foreach ($watchlist_movies as $movie): ?>
+                        <?php 
+                        $trailer_url = get_movie_trailer_url($pdo, $movie['id']);
+                        $poster = (!empty($movie['cover_url']) ? $movie['cover_url'] : ($movie['poster_url'] ?: 'https://via.placeholder.com/300x450/1a1a2e/e2b616?text=Film'));
+                        ?>
                         <div class="movie-card">
                             <div class="movie-card-poster">
-                                <img src="<?= e($movie['poster_url'] ?: 'https://via.placeholder.com/300x450/1a1a2e/e2b616?text=Film') ?>" 
+                                <img src="<?= e($poster) ?>" 
                                      alt="<?= e($movie['title']) ?>" loading="lazy"
                                      onerror="this.src='https://via.placeholder.com/300x450/1a1a2e/e2b616?text=Film'">
                                 <span class="movie-card-year"><?= e($movie['year']) ?></span>
                                 <div class="movie-card-poster-overlay">
                                     <a href="<?= SITE_URL ?>/movie.php?id=<?= $movie['id'] ?>" class="btn btn-primary btn-sm"><i class="fas fa-play"></i> Detaylar</a>
+                                    <?php if ($trailer_url): ?>
+                                        <a href="<?= e($trailer_url) ?>" class="btn btn-secondary btn-sm trailer-btn" target="_blank" rel="noopener"><i class="fas fa-clapperboard"></i> Fragman</a>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                             <div class="movie-card-body">
@@ -155,6 +169,9 @@ require_once INCLUDES_PATH . '/navbar.php';
                                     <button class="btn btn-watchlist btn-sm active" data-movie-id="<?= $movie['id'] ?>">
                                         <i class="fas fa-bookmark"></i> <span class="watchlist-text">Listede</span>
                                     </button>
+                                    <?php if ($trailer_url): ?>
+                                        <a href="<?= e($trailer_url) ?>" class="btn btn-secondary btn-sm trailer-btn" target="_blank" rel="noopener"><i class="fas fa-clapperboard"></i></a>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         </div>
@@ -175,7 +192,9 @@ require_once INCLUDES_PATH . '/navbar.php';
                 <div class="comments-list">
                     <?php foreach ($user_comments as $comment): ?>
                         <div class="comment-item" data-comment-id="<?= $comment['id'] ?>">
-                            <div class="comment-avatar"><?= mb_strtoupper(mb_substr($user['username'], 0, 1)) ?></div>
+                            <div class="comment-avatar comment-avatar-image">
+                                <img src="<?= e(get_user_avatar_url($user['username'], $user['role'] ?? 'user')) ?>" alt="Profil fotoğrafı" loading="lazy">
+                            </div>
                             <div class="comment-content">
                                 <div class="comment-header">
                                     <span class="comment-username">

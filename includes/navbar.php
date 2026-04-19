@@ -29,7 +29,11 @@
             <a href="<?= SITE_URL ?>/search.php" class="nav-link"><i class="fas fa-compass"></i> Keşfet</a>
             
             <?php if (is_logged_in()): ?>
-                <a href="<?= SITE_URL ?>/profile.php" class="nav-link"><i class="fas fa-user"></i> Profilim</a>
+                <?php $nav_user = get_current_user_data($pdo); ?>
+                <a href="<?= SITE_URL ?>/profile.php" class="nav-link nav-user-link">
+                    <img class="nav-user-avatar" src="<?= e(get_user_avatar_url($_SESSION['username'] ?? 'user', $_SESSION['user_role'] ?? 'user')) ?>" alt="Profil fotoğrafı" loading="lazy">
+                    <span>Profilim</span>
+                </a>
                 <?php if (is_admin()): ?>
                     <a href="<?= SITE_URL ?>/admin/index.php" class="nav-link nav-admin"><i class="fas fa-cog"></i> Admin</a>
                 <?php endif; ?>
